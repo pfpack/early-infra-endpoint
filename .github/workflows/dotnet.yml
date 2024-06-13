@@ -32,16 +32,27 @@ jobs:
     - name: Add Local Nuget Source
       run: dotnet nuget add source ~/nuget
 
+    # Endpoint.Core.Generator
+
+    - name: Restore Endpoint.Core.Generator
+      run: dotnet restore ./src/*/*/Endpoint.Core.Generator.csproj
+
+    - name: Build Endpoint.Core.Generator
+      run: dotnet build ./src/*/*/Endpoint.Core.Generator.csproj --no-restore  -c Release
+
+    - name: Pack Endpoint.Core.Generator
+      run: dotnet pack ./src/*/*/Endpoint.Core.Generator.csproj --no-restore -o ~/nuget  -c Release
+
     # Endpoint.Core
 
     - name: Restore Endpoint.Core
-      run: dotnet restore ./src/*/Endpoint.Core.csproj
+      run: dotnet restore ./src/*/*/Endpoint.Core.csproj
 
     - name: Build Endpoint.Core
-      run: dotnet build ./src/*/Endpoint.Core.csproj --no-restore  -c Release
+      run: dotnet build ./src/*/*/Endpoint.Core.csproj --no-restore  -c Release
 
     - name: Pack Endpoint.Core
-      run: dotnet pack ./src/*/Endpoint.Core.csproj --no-restore -o ~/nuget  -c Release
+      run: dotnet pack ./src/*/*/Endpoint.Core.csproj --no-restore -o ~/nuget  -c Release
 
       # Push
 
