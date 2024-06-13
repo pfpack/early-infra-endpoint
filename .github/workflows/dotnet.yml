@@ -37,10 +37,10 @@ jobs:
     - name: Restore Endpoint.Core
       run: dotnet restore ./src/*/Endpoint.Core.csproj
 
-    - name: Build FlatArray
+    - name: Build Endpoint.Core
       run: dotnet build ./src/*/Endpoint.Core.csproj --no-restore  -c Release
 
-    - name: Pack FlatArray
+    - name: Pack Endpoint.Core
       run: dotnet pack ./src/*/Endpoint.Core.csproj --no-restore -o ~/nuget  -c Release
 
       # Push
