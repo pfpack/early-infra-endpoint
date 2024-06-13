@@ -10,15 +10,26 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/pfpack/pfpack-core-flatcollections</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/pfpack/pfpack-core-flatcollections</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/pfpack/early-infra-endpoint</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pfpack/early-infra-endpoint</RepositoryUrl>
     <Company>pfpack</Company>
     <Authors>Andrei Sergeev, Pavel Moskovoy</Authors>
     <Copyright>Copyright © 2024 Andrei Sergeev, Pavel Moskovoy</Copyright>
     <Description>EarlyFuncPack Infra.Endpoint is an infrastructure engine for .NET for building lightweight applications and services.</Description>
     <RootNamespace>PrimeFuncPack</RootNamespace>
-    <AssemblyName>EarlyFuncPack.Core.FlatCollections</AssemblyName>
+    <AssemblyName>EarlyFuncPack.Infra.Endpoint.Core</AssemblyName>
     <Version>0.0.1-build.1</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\..\docs\flatcollections\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

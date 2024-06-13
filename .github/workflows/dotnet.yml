@@ -32,7 +32,7 @@ jobs:
     - name: Add Local Nuget Source
       run: dotnet nuget add source ~/nuget
 
-    # FlatArray
+    # Endpoint.Core
 
     - name: Restore Endpoint.Core
       run: dotnet restore ./src/*/Endpoint.Core.csproj
