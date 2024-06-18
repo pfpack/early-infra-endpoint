@@ -18,8 +18,8 @@
     <Copyright>Copyright © 2024 Andrei Sergeev, Pavel Moskovoy</Copyright>
     <Description>EarlyFuncPack Infra.Endpoint is an infrastructure engine for .NET for building lightweight applications and services.</Description>
     <RootNamespace>PrimeFuncPack</RootNamespace>
-    <AssemblyName>EarlyFuncPack.Infra.Endpoint.Core</AssemblyName>
-    <Version>0.0.1-build.1</Version>
+    <AssemblyName>EarlyFuncPack.Infra.Endpoint.Contract</AssemblyName>
+    <Version>0.0.1-build.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,14 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Endpoint.Core.Generator\Endpoint.Core.Generator.csproj">
-      <PrivateAssets>contentfiles; build</PrivateAssets>
-      <SetTargetFramework>TargetFramework=netstandard2.0</SetTargetFramework>
-    </ProjectReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="EarlyFuncPack.Infra.Endpoint.Contract" Version="0.0.1-build.4" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.6.15" />
   </ItemGroup>
 
 </Project>
