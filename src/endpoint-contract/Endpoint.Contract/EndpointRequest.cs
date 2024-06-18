@@ -7,14 +7,14 @@ namespace PrimeFuncPack;
 public sealed class EndpointRequest
 {
     public EndpointRequest(
-        [AllowNull] string operationName,
+        [AllowNull] string operationId,
         [AllowNull] IReadOnlyCollection<KeyValuePair<string, string?>> headers = null,
         [AllowNull] IReadOnlyCollection<KeyValuePair<string, string?>> queryParameters = null,
         [AllowNull] IReadOnlyCollection<KeyValuePair<string, string?>> routeValues = null,
         [AllowNull] IReadOnlyCollection<KeyValuePair<string, string?>> userClaims = null,
         Stream? body = null)
     {
-        OperationName = operationName ?? string.Empty;
+        OperationId = operationId ?? string.Empty;
         Headers = headers ?? [];
         QueryParameters = queryParameters ?? [];
         RouteValues = routeValues ?? [];
@@ -22,7 +22,7 @@ public sealed class EndpointRequest
         Body = body;
     }
 
-    public string OperationName { get; }
+    public string OperationId { get; }
 
     public IReadOnlyCollection<KeyValuePair<string, string?>> Headers { get; }
 

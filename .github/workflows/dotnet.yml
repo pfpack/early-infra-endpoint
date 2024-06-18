@@ -32,6 +32,17 @@ jobs:
     - name: Add Local Nuget Source
       run: dotnet nuget add source ~/nuget
 
+    # Endpoint.Contract
+
+    - name: Restore Endpoint.Contract
+      run: dotnet restore ./src/*/*/Endpoint.Contract.csproj
+
+    - name: Build Endpoint.Contract
+      run: dotnet build ./src/*/*/Endpoint.Contract.csproj --no-restore  -c Release
+
+    - name: Pack Endpoint.Contract
+      run: dotnet pack ./src/*/*/Endpoint.Contract.csproj --no-restore -o ~/nuget  -c Release
+
     # Endpoint.Core.Generator
 
     - name: Restore Endpoint.Core.Generator

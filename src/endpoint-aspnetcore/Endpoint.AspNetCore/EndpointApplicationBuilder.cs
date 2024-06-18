@@ -40,13 +40,19 @@ public static class EndpointApplicationBuilder
         }
 
         _ = app.UseRouter(routeBuilder.Build());
+
+        if (app is ISwaggerBuilder swaggerBuilder)
+        {
+            _ = swaggerBuilder.Use(EndpointSwaggerConfigurator.Configure<TEndpoint>);
+        }
+
         return app;
     }
 
     private static async Task InvokeAsync(HttpContext context, IEndpoint endpoint, string operationId)
     {
         var request = new EndpointRequest(
-            operationName: operationId,
+            operationId: operationId,
             headers: context.Request.Headers?.SelectMany(GetValues).ToArray(),
             queryParameters: context.Request.Query?.SelectMany(GetValues).ToArray(),
             routeValues: context.Request.RouteValues?.Select(MapRouteValue).ToArray(),

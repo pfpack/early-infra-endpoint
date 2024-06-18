@@ -8,7 +8,7 @@ namespace PrimeFuncPack;
 partial class EndpointSwaggerConfigurator
 {
     internal static void Configure<TEndpoint>(OpenApiDocument document)
-        where TEndpoint : class, IEndpointMetadataProvider
+        where TEndpoint : IEndpointMetadataProvider
     {
         if (document is null)
         {
