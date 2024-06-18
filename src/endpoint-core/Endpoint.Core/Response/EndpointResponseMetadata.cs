@@ -4,17 +4,17 @@ using Microsoft.OpenApi.Models;
 
 namespace PrimeFuncPack;
 
-public sealed class EndpointMetadata
+public sealed class EndpointResponseMetadata
 {
-    public EndpointMetadata(
-        [AllowNull] IReadOnlyCollection<EndpointOperation> operations,
+    public EndpointResponseMetadata(
+        [AllowNull] OpenApiResponses responses,
         IReadOnlyDictionary<string, OpenApiSchema>? schemas = null)
     {
-        Operations = operations ?? [];
+        Responses = responses ?? [];
         Schemas = schemas;
     }
 
-    public IReadOnlyCollection<EndpointOperation> Operations { get; }
+    public OpenApiResponses Responses { get; }
 
     public IReadOnlyDictionary<string, OpenApiSchema>? Schemas { get; }
 }
