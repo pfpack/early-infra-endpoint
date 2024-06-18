@@ -5,5 +5,5 @@ namespace PrimeFuncPack;
 
 public interface IEndpointInvokeSupplier
 {
-    Task<EndpointResponse> InvokeAsync(EndpointRequest request, CancellationToken cancellationToken);
+    Task<EndpointResponse> InvokeAsync(EndpointRequest request, CancellationToken cancellationToken = default);
 }

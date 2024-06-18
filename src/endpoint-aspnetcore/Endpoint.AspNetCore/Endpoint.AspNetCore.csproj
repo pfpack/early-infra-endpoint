@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EarlyFuncPack.Infra.Endpoint.Contract" Version="0.0.1-build.5" />
+    <PackageReference Include="EarlyFuncPack.Infra.Endpoint.Contract" Version="0.0.1-build.6" />
   </ItemGroup>
 
 </Project>

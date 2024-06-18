@@ -16,10 +16,6 @@ partial class EndpointSwaggerConfigurator
         }
 
         var metadata = TEndpoint.Metadata;
-        if (metadata is null)
-        {
-            return;
-        }
 
         document.Tags ??= [];
         document.Paths ??= [];

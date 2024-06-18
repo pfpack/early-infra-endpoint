@@ -14,13 +14,15 @@ namespace PrimeFuncPack;
 
 public static class EndpointApplicationBuilder
 {
+    private const string EnumTextFormat = "F";
+
     public static TApplicationBuilder UseEndpoint<TApplicationBuilder, TEndpoint>(
         this TApplicationBuilder app, Func<IServiceProvider, TEndpoint> endpointResolver)
         where TApplicationBuilder : IApplicationBuilder
         where TEndpoint : IEndpoint
     {
-        _ = app ?? throw new ArgumentNullException(nameof(app));
-        _ = endpointResolver ?? throw new ArgumentNullException(nameof(endpointResolver));
+        ArgumentNullException.ThrowIfNull(app);
+        ArgumentNullException.ThrowIfNull(endpointResolver);
 
         var metadata = TEndpoint.Metadata;
         if (metadata?.Operations?.Count is not > 0)
@@ -31,7 +33,7 @@ public static class EndpointApplicationBuilder
         var routeBuilder = new RouteBuilder(app);
         foreach (var operation in metadata.Operations)
         {
-            var verb = operation.Verb.ToString("F").ToUpperInvariant();
+            var verb = operation.Verb.ToString(EnumTextFormat).ToUpperInvariant();
             _ = routeBuilder.MapVerb(verb, operation.Route, InnerInvokeAsync);
 
             Task InnerInvokeAsync(HttpContext context)
@@ -119,7 +121,7 @@ public static class EndpointApplicationBuilder
     {
         var buffer = new Memory<byte>(new byte[body.Length]);
 
-        await body.ReadAsync(buffer, cancellationToken);
-        await httpResponse.BodyWriter.WriteAsync(buffer, cancellationToken);
+        _ = await body.ReadAsync(buffer, cancellationToken);
+        _ = await httpResponse.BodyWriter.WriteAsync(buffer, cancellationToken);
     }
 }
