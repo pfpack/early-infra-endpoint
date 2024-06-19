@@ -12,14 +12,14 @@ public sealed class EndpointRequest
         [AllowNull] IReadOnlyCollection<KeyValuePair<string, string?>> queryParameters = null,
         [AllowNull] IReadOnlyCollection<KeyValuePair<string, string?>> routeValues = null,
         [AllowNull] IReadOnlyCollection<KeyValuePair<string, string?>> userClaims = null,
-        Stream? body = null)
+        [AllowNull] Stream body = null)
     {
         OperationId = operationId ?? string.Empty;
         Headers = headers ?? [];
         QueryParameters = queryParameters ?? [];
         RouteValues = routeValues ?? [];
         UserClaims = userClaims ?? [];
-        Body = body;
+        Body = body ?? Stream.Null;
     }
 
     public string OperationId { get; }
@@ -32,5 +32,5 @@ public sealed class EndpointRequest
 
     public IReadOnlyCollection<KeyValuePair<string, string?>> UserClaims { get; }
 
-    public Stream? Body { get; }
+    public Stream Body { get; }
 }

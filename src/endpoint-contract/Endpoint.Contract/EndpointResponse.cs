@@ -9,16 +9,16 @@ public sealed class EndpointResponse
     public EndpointResponse(
         int statusCode,
         [AllowNull] IReadOnlyCollection<KeyValuePair<string, string?>> headers = null,
-        Stream? body = null)
+        [AllowNull] Stream body = null)
     {
         StatusCode = statusCode;
         Headers = headers ?? [];
-        Body = body;
+        Body = body ?? Stream.Null;
     }
 
     public int StatusCode { get; }
 
     public IReadOnlyCollection<KeyValuePair<string, string?>> Headers { get; }
 
-    public Stream? Body { get; }
+    public Stream Body { get; }
 }
