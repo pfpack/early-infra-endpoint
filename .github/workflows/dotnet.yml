@@ -2,7 +2,7 @@ name: .NET
 
 on:
   push:
-    branches: [ main, dev, feature/*, fix/*, release/* ]
+    branches: [ main, dev, feature1/*, fix/*, release/* ]
 
   pull_request:
     branches: [ main ]
@@ -16,13 +16,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
             8.0.x
+            9.0.x
 
     # Create Local NuGet Source
 
@@ -65,7 +67,29 @@ jobs:
     - name: Pack Endpoint.Core
       run: dotnet pack ./src/*/*/Endpoint.Core.csproj --no-restore -o ~/nuget  -c Release
 
-      # Push
+    # Endpoint.AspNetCore.Generator
+
+    - name: Restore Endpoint.AspNetCore.Generator
+      run: dotnet restore ./src/*/*/Endpoint.AspNetCore.Generator.csproj
+
+    - name: Build Endpoint.AspNetCore.Generator
+      run: dotnet build ./src/*/*/Endpoint.AspNetCore.Generator.csproj --no-restore  -c Release
+
+    - name: Pack Endpoint.AspNetCore.Generator
+      run: dotnet pack ./src/*/*/Endpoint.AspNetCore.Generator.csproj --no-restore -o ~/nuget  -c Release
+
+    # Endpoint.AspNetCore
+
+    - name: Restore Endpoint.AspNetCore
+      run: dotnet restore ./src/*/*/Endpoint.AspNetCore.csproj
+
+    - name: Build Endpoint.AspNetCore
+      run: dotnet build ./src/*/*/Endpoint.AspNetCore.csproj --no-restore  -c Release
+
+    - name: Pack Endpoint.AspNetCore
+      run: dotnet pack ./src/*/*/Endpoint.AspNetCore.csproj --no-restore -o ~/nuget  -c Release
+
+    # Push
 
     - name: Push Packages
       if: ${{ github.event_name == 'release' }}

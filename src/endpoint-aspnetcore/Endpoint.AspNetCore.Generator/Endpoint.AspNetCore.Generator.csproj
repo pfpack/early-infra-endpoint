@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <InvariantGlobalization>true</InvariantGlobalization>
@@ -18,7 +19,7 @@
     <Copyright>Copyright © 2025 Andrei Sergeev, Pavel Moskovoy</Copyright>
     <Description>EarlyFuncPack Infra.Endpoint is an infrastructure engine for .NET for building lightweight applications and services.</Description>
     <RootNamespace>PrimeFuncPack</RootNamespace>
-    <AssemblyName>EarlyFuncPack.Infra.Endpoint.AspNetCore</AssemblyName>
+    <AssemblyName>EarlyFuncPack.Infra.Endpoint.AspNetCore.Generator</AssemblyName>
     <Version>0.0.1</Version>
   </PropertyGroup>
 
@@ -34,15 +35,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\endpoint-contract\Endpoint.Contract\Endpoint.Contract.csproj" />
-    <ProjectReference Include="..\Endpoint.AspNetCore.Generator\Endpoint.AspNetCore.Generator.csproj">
-      <PrivateAssets>contentfiles; build</PrivateAssets>
-      <SetTargetFramework>TargetFramework=netstandard2.0</SetTargetFramework>
-    </ProjectReference>
+    <PackageReference Include="EarlyFuncPack.CodeAnalysis.Extensions" Version="0.0.1" />
+    <PackageReference Include="EarlyFuncPack.CodeAnalysis.SourceBuilder" Version="0.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

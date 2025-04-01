@@ -1,6 +1,9 @@
-﻿namespace PrimeFuncPack;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace PrimeFuncPack;
 
 public interface IEndpointResponseMapper<TResponse>
 {
-    EndpointResponse MapResponse(TResponse response);
+    static abstract ValueTask<EndpointResponse> MapResponseAsync(TResponse response, CancellationToken cancellationToken);
 }

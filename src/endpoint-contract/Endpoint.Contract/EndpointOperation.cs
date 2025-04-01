@@ -4,12 +4,11 @@ namespace PrimeFuncPack;
 
 public sealed class EndpointOperation
 {
-    public EndpointOperation(string id, EndpointVerb verb, string route, OpenApiOperation? openApiOperation = null)
+    public EndpointOperation(string id, EndpointVerb verb, string route)
     {
         Id = id ?? string.Empty;
         Verb = verb;
         Route = route ?? string.Empty;
-        OpenApiOperation = openApiOperation;
     }
 
     public string Id { get; }
@@ -18,5 +17,7 @@ public sealed class EndpointOperation
 
     public string Route { get; }
 
-    public OpenApiOperation? OpenApiOperation { get; }
+    public OpenApiOperation? OpenApiOperation { get; init; }
+
+    public OpenApiComponents? OpenApiComponents { get; init; }
 }

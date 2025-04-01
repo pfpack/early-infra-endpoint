@@ -2,21 +2,20 @@
 
 namespace PrimeFuncPack;
 
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public sealed class EndpointAttribute : Attribute
 {
-    public EndpointAttribute(string operationId, EndpointVerb verb, string route)
+    public EndpointAttribute(EndpointVerb verb, string route)
     {
-        OperationId = operationId ?? string.Empty;
         Verb = verb;
         Route = route ?? string.Empty;
     }
 
-    public string OperationId { get; }
-
     public EndpointVerb Verb { get; }
 
     public string Route { get; }
+
+    public string? OperationId { get; set; }
 
     public string? Summary { get; set; }
 

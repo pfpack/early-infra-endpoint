@@ -19,7 +19,7 @@ public static class EndpointApplicationBuilder
     public static TApplicationBuilder UseEndpoint<TApplicationBuilder, TEndpoint>(
         this TApplicationBuilder app, Func<IServiceProvider, TEndpoint> endpointResolver)
         where TApplicationBuilder : IApplicationBuilder
-        where TEndpoint : IEndpoint
+        where TEndpoint : IEndpointMetadataProvider, IEndpointInvokeSupplier
     {
         ArgumentNullException.ThrowIfNull(app);
         ArgumentNullException.ThrowIfNull(endpointResolver);
@@ -51,7 +51,7 @@ public static class EndpointApplicationBuilder
         return app;
     }
 
-    private static async Task InvokeAsync(HttpContext context, IEndpoint endpoint, string operationId)
+    private static async Task InvokeAsync(HttpContext context, IEndpointInvokeSupplier endpoint, string operationId)
     {
         var request = new EndpointRequest(
             operationId: operationId,
@@ -97,7 +97,7 @@ public static class EndpointApplicationBuilder
             httpResponse.AddHeader(header.Key, header.Value);
         }
 
-        if (response.Body is null)
+        if ((response.Body is null) || (response.StatusCode is StatusCodes.Status204NoContent))
         {
             return Task.CompletedTask;
         }

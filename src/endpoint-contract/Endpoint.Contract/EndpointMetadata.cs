@@ -6,15 +6,11 @@ namespace PrimeFuncPack;
 
 public sealed class EndpointMetadata
 {
-    public EndpointMetadata(
-        [AllowNull] IReadOnlyCollection<EndpointOperation> operations,
-        IReadOnlyDictionary<string, OpenApiSchema>? schemas = null)
-    {
+    public EndpointMetadata([AllowNull] IReadOnlyCollection<EndpointOperation> operations)
+        =>
         Operations = operations ?? [];
-        Schemas = schemas;
-    }
 
     public IReadOnlyCollection<EndpointOperation> Operations { get; }
 
-    public IReadOnlyDictionary<string, OpenApiSchema>? Schemas { get; }
+    public OpenApiComponents? OpenApiComponents { get; init; }
 }

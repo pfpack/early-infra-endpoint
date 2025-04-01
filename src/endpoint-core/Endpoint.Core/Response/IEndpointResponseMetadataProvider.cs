@@ -2,5 +2,5 @@
 
 public interface IEndpointResponseMetadataProvider
 {
-    static abstract EndpointResponseMetadata Metadata { get; }
+    static abstract EndpointResponseMetadata ResponseMetadata { get; }
 }
