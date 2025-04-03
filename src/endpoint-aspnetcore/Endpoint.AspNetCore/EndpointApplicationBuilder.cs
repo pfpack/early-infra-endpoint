@@ -121,7 +121,9 @@ public static class EndpointApplicationBuilder
     {
         var buffer = new Memory<byte>(new byte[body.Length]);
 
-        _ = await body.ReadAsync(buffer, cancellationToken);
+        // to do: implement reading in a cycle by small segments after Early version
+        await body.ReadExactlyAsync(buffer, cancellationToken);
+
         _ = await httpResponse.BodyWriter.WriteAsync(buffer, cancellationToken);
     }
 }
