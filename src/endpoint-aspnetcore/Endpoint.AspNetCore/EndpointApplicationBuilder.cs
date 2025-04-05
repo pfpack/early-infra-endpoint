@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
+using static PrimeFuncPack.StreamUtils;
 
 namespace PrimeFuncPack;
 
@@ -119,10 +120,7 @@ public static class EndpointApplicationBuilder
 
     private static async Task WriteBodyAsync(this HttpResponse httpResponse, Stream body, CancellationToken cancellationToken)
     {
-        var buffer = new Memory<byte>(new byte[body.Length]);
-
-        // to do: implement reading in a cycle by small segments after Early version
-        await body.ReadExactlyAsync(buffer, cancellationToken);
+        var buffer = await ReadStreamAsync(body, cancellationToken);
 
         _ = await httpResponse.BodyWriter.WriteAsync(buffer, cancellationToken);
     }
