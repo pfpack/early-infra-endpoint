@@ -19,7 +19,7 @@
     <Description>EarlyFuncPack Infra.Endpoint is an infrastructure engine for .NET for building lightweight applications and services.</Description>
     <RootNamespace>PrimeFuncPack</RootNamespace>
     <AssemblyName>EarlyFuncPack.Infra.Endpoint.Core</AssemblyName>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.7" />
   </ItemGroup>
 
 </Project>

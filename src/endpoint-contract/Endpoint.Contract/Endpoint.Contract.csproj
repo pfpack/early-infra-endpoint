@@ -19,7 +19,7 @@
     <Description>EarlyFuncPack Infra.Endpoint is an infrastructure engine for .NET for building lightweight applications and services.</Description>
     <RootNamespace>PrimeFuncPack</RootNamespace>
     <AssemblyName>EarlyFuncPack.Infra.Endpoint.Contract</AssemblyName>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.OpenApi" Version="1.6.24" />
+    <PackageReference Include="Microsoft.OpenApi" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

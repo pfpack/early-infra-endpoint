@@ -1,3 +1,5 @@
+using Microsoft.OpenApi;
+
 namespace PrimeFuncPack;
 
 public static class EndpointEmptyResponseMetadataProvider
@@ -8,7 +10,7 @@ public static class EndpointEmptyResponseMetadataProvider
         {
             Responses = new()
             {
-                [EndpointAbsentResponseProvider.StatusCode.ToString()] = new()
+                [EndpointAbsentResponseProvider.StatusCode.ToString()] = new OpenApiResponse
                 {
                     Description = "NoContent"
                 }

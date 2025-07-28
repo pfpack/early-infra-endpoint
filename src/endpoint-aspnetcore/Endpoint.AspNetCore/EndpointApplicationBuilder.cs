@@ -121,7 +121,6 @@ public static class EndpointApplicationBuilder
     private static async Task WriteBodyAsync(this HttpResponse httpResponse, Stream body, CancellationToken cancellationToken)
     {
         var buffer = await ReadStreamAsync(body, cancellationToken);
-
         _ = await httpResponse.BodyWriter.WriteAsync(buffer, cancellationToken);
     }
 }

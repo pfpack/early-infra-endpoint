@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/endpoint-aspnetcore/">
+    <Project Path="src/endpoint-aspnetcore/Endpoint.AspNetCore.Generator/Endpoint.AspNetCore.Generator.csproj" />
+    <Project Path="src/endpoint-aspnetcore/Endpoint.AspNetCore/Endpoint.AspNetCore.csproj" />
+  </Folder>
+  <Folder Name="/endpoint-contract/">
+    <Project Path="src/endpoint-contract/Endpoint.Contract/Endpoint.Contract.csproj" />
+  </Folder>
+  <Folder Name="/endpoint-core/">
+    <Project Path="src/endpoint-core/Endpoint.Core.Generator/Endpoint.Core.Generator.csproj" />
+    <Project Path="src/endpoint-core/Endpoint.Core/Endpoint.Core.csproj" />
+  </Folder>
+</Solution>

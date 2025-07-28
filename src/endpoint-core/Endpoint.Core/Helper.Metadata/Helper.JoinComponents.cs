@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace PrimeFuncPack;
 
@@ -22,15 +22,15 @@ partial class EndpointMetadataHelper
 
             result ??= new();
 
-            result.Schemas.AddValues(components.Schemas);
-            result.Responses.AddValues(components.Responses);
-            result.Parameters.AddValues(components.Parameters);
-            result.Examples.AddValues(components.Examples);
-            result.RequestBodies.AddValues(components.RequestBodies);
-            result.Headers.AddValues(components.Headers);
-            result.Links.AddValues(components.Links);
-            result.Callbacks.AddValues(components.Callbacks);
-            result.Extensions.AddValues(components.Extensions);
+            result.Schemas = Join(result.Schemas, components.Schemas);
+            result.Responses = Join(result.Responses, components.Responses);
+            result.Parameters = Join(result.Parameters, components.Parameters);
+            result.Examples = Join(result.Examples, components.Examples);
+            result.RequestBodies = Join(result.RequestBodies, components.RequestBodies);
+            result.Headers = Join(result.Headers, components.Headers);
+            result.Links = Join(result.Links, components.Links);
+            result.Callbacks = Join(result.Callbacks, components.Callbacks);
+            result.Extensions = Join(result.Extensions, components.Extensions);
         }
 
         return result;
