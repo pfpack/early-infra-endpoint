@@ -16,6 +16,8 @@ partial class OperationSourceBuilder
             $"verb: {GetVerbSourceCode()},",
             $"route: {operation.Metadata.Route.AsStringSourceCodeOrStringEmpty()})")
         .BeginCodeBlock()
+        .AppendOpenApiTags(
+            operation)
         .AppendOpenApiOperation(
             operation)
         .AppendOpenApiComponents(
@@ -50,8 +52,6 @@ file static class OperationSourceBuilderExtensions
             $"Deprecated = {operation.GetDeprecatedCode()},",
             $"Summary = {operation.Metadata.Summary.AsStringSourceCodeOrStringEmpty()},",
             $"Description = {operation.Metadata.Description.AsStringSourceCodeOrStringEmpty()},")
-        .AppendOpenApiTags(
-            operation)
         .AppendOpenApiRequest(
             operation)
         .AppendOpenApiResponses(
@@ -128,7 +128,7 @@ file static class OperationSourceBuilderExtensions
         return builder.EndArguments();
     }
 
-    private static SourceBuilder AppendOpenApiTags(this SourceBuilder builder, EndpointOperationData operation)
+    internal static SourceBuilder AppendOpenApiTags(this SourceBuilder builder, EndpointOperationData operation)
     {
         var tags = operation.Metadata.Tags;
         if (tags.Length is 0)

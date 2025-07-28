@@ -1,19 +1,29 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PrimeFuncPack;
 
 internal static partial class EndpointSwaggerConfigurator
 {
-    private static void AddValues<TValue>(this IDictionary<string, TValue> source, IDictionary<string, TValue>? values)
+    private static IDictionary<string, TValue> Concat<TValue>(
+        [AllowNull] IDictionary<string, TValue> source,
+        [AllowNull] IDictionary<string, TValue> values)
     {
         if (values?.Count is not > 0)
         {
-            return;
+            return source ?? new Dictionary<string, TValue>(capacity: 0);
+        }
+
+        if (source?.Count is not > 0)
+        {
+            return new Dictionary<string, TValue>(values);
         }
 
         foreach (var value in values)
         {
             _ = source.TryAdd(value.Key, value.Value);
         }
+
+        return source;
     }
 }

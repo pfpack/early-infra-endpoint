@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Collections.Generic;
+using Microsoft.OpenApi;
 
 namespace PrimeFuncPack;
 
@@ -16,6 +17,8 @@ public sealed class EndpointOperation
     public EndpointVerb Verb { get; }
 
     public string Route { get; }
+
+    public IReadOnlyCollection<OpenApiTag>? Tags { get; init; }
 
     public OpenApiOperation? OpenApiOperation { get; init; }
 

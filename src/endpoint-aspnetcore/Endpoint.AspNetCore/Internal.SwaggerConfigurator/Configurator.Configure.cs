@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.OpenApi.Models;
+using System.Net.Http;
+using Microsoft.OpenApi;
 
 namespace PrimeFuncPack;
 
@@ -19,36 +20,70 @@ partial class EndpointSwaggerConfigurator
 
         document.Paths ??= [];
 
-        var tags = new List<OpenApiTag>();
-        var paths = new List<KeyValuePair<string, OpenApiPathItem>>();
+        var sourceTags = document.Tags;
+        document.Tags = new HashSet<OpenApiTag>();
 
-        var components = new List<OpenApiComponents>();
+        var sourcePaths = document.Paths;
+        document.Paths = [];
+
+        var sourceComponents = document.Components;
+        document.Components = new();
+
         if (metadata.OpenApiComponents is not null)
         {
-            components.Add(metadata.OpenApiComponents);
+            document.AddComponents(metadata.OpenApiComponents);
         }
 
         foreach (var operation in metadata.Operations)
         {
-            tags.AddTags(operation);
-            paths.AddPaths(operation);
-            components.AddComponents(operation);
+            document.AddTags(operation);
+            document.AddPaths(operation);
+            document.AddComponents(operation.OpenApiComponents);
         }
 
-        document.InsertTags(tags);
-        document.InsertPaths(paths);
-        document.InsertComponents(components);
+        document.AddTags(sourceTags);
+        document.AddPaths(sourcePaths);
+        document.AddComponents(sourceComponents);
     }
 
-    private static void AddTags(this List<OpenApiTag> tags, EndpointOperation operation)
+    private static void AddTags(this OpenApiDocument document, EndpointOperation operation)
     {
-        if (operation.OpenApiOperation?.Tags?.Count > 0)
+        if (operation.Tags?.Count is not > 0)
         {
-            tags.AddRange(operation.OpenApiOperation.Tags);
+            return;
+        }
+
+        if (document.Tags?.Count is not > 0)
+        {
+            document.Tags = operation.Tags.ToHashSet();
+        }
+        else
+        {
+            foreach (var tag in operation.Tags)
+            {
+                document.Tags.Add(tag);
+            }
+        }
+
+        if (operation.OpenApiOperation is not null)
+        {
+            operation.OpenApiOperation.Tags ??= new HashSet<OpenApiTagReference>(capacity: operation.Tags.Count);
+            foreach (var tag in operation.Tags)
+            {
+                if (string.IsNullOrEmpty(tag.Name))
+                {
+                    continue;
+                }
+
+                operation.OpenApiOperation.Tags.Add(
+                    item: new(
+                        referenceId: tag.Name,
+                        hostDocument: document));
+            }
         }
     }
 
-    private static void AddPaths(this List<KeyValuePair<string, OpenApiPathItem>> paths, EndpointOperation operation)
+    private static void AddPaths(this OpenApiDocument document, EndpointOperation operation)
     {
         var openApiOperation = operation.OpenApiOperation;
         if (openApiOperation is null)
@@ -56,134 +91,123 @@ partial class EndpointSwaggerConfigurator
             return;
         }
 
-        var operationType = operation.Verb switch
+        document.Paths ??= [];
+
+        var httpMethod = operation.Verb switch
         {
-            EndpointVerb.Get => OperationType.Get,
-            EndpointVerb.Post => OperationType.Post,
-            EndpointVerb.Put => OperationType.Put,
-            EndpointVerb.Delete => OperationType.Delete,
-            EndpointVerb.Options => OperationType.Options,
-            EndpointVerb.Head => OperationType.Head,
-            EndpointVerb.Patch => OperationType.Patch,
-            EndpointVerb.Trace => OperationType.Trace,
+            EndpointVerb.Get => HttpMethod.Get,
+            EndpointVerb.Post => HttpMethod.Post,
+            EndpointVerb.Put => HttpMethod.Put,
+            EndpointVerb.Delete => HttpMethod.Delete,
+            EndpointVerb.Options => HttpMethod.Options,
+            EndpointVerb.Head => HttpMethod.Head,
+            EndpointVerb.Patch => HttpMethod.Patch,
+            EndpointVerb.Trace => HttpMethod.Trace,
             _ => throw new InvalidOperationException($"An unexpected endpoint verb: {operation.Verb}")
         };
 
-        paths.Add(
-            item: new(
-                key: operation.Route,
-                value: new()
-                {
-                    Summary = operation.OpenApiOperation?.Summary,
-                    Description = operation.OpenApiOperation?.Description,
-                    Operations = new Dictionary<OperationType, OpenApiOperation>
-                    {
-                        [operationType] = openApiOperation
-                    }
-                }));
+        var path = new OpenApiPathItem
+        {
+            Summary = operation.OpenApiOperation?.Summary,
+            Description = operation.OpenApiOperation?.Description,
+            Operations = new Dictionary<HttpMethod, OpenApiOperation>
+            {
+                [httpMethod] = openApiOperation
+            }
+        };
+
+        document.AddPath(operation.Route, path);
     }
 
-    private static void AddComponents(this List<OpenApiComponents> components, EndpointOperation operation)
+    private static void AddPath(this OpenApiDocument document, string route, IOpenApiPathItem item)
     {
-        if (operation.OpenApiComponents is null)
+        if (document.Paths.TryGetValue(route, out var actualPath))
+        {
+            actualPath.AddOperations(item);
+            return;
+        }
+
+        document.Paths[route] = item;
+    }
+
+    private static void AddOperations(this IOpenApiPathItem source, IOpenApiPathItem path)
+    {
+        if (path.Operations?.Count is not > 0)
         {
             return;
         }
 
-        components.Add(operation.OpenApiComponents);
+        if (source.Operations is null)
+        {
+            if (source is OpenApiPathItem sourceItem)
+            {
+                sourceItem.Operations = path.Operations;
+            }
+            return;
+        }
+
+        foreach (var operation in path.Operations)
+        {
+            _ = source.Operations?.TryAdd(operation.Key, operation.Value);
+        }
     }
 
-    private static void InsertTags(this OpenApiDocument document, List<OpenApiTag> tags)
+    private static void AddTags(this OpenApiDocument document, ISet<OpenApiTag>? tags)
     {
-        if (tags.Count is 0)
+        if (tags?.Count is not > 0)
         {
             return;
         }
 
         if (document.Tags?.Count is not > 0)
         {
-            document.Tags = tags.ToArray();
+            document.Tags = tags;
             return;
         }
 
-        var tagsDictionary = new Dictionary<string, OpenApiTag>(
-            capacity: tags.Count + document.Tags.Count,
-            comparer: StringComparer.InvariantCultureIgnoreCase);
-
-        foreach (var tag in tags.Concat(document.Tags))
+        foreach (var tag in tags)
         {
-            var key = tag.Name ?? string.Empty;
-            _ = tagsDictionary.TryAdd(key, tag);
-        }
-
-        document.Tags = tagsDictionary.Values.ToList();
-    }
-
-    private static void InsertPaths(this OpenApiDocument document, List<KeyValuePair<string, OpenApiPathItem>> paths)
-    {
-        if (paths.Count is 0)
-        {
-            return;
-        }
-
-        var resultPaths = new OpenApiPaths();
-
-        foreach (var path in paths.Concat(document.Paths ?? []))
-        {
-            if (resultPaths.TryGetValue(path.Key, out var actualPath))
-            {
-                actualPath.ConcatOperations(path.Value);
-                continue;
-            }
-
-            resultPaths.Add(path.Key, path.Value);
-        }
-
-        document.Paths = resultPaths;
-    }
-
-    private static void ConcatOperations(this OpenApiPathItem source, OpenApiPathItem additional)
-    {
-        if (additional.Operations?.Count is not > 0)
-        {
-            return;
-        }
-
-        if (source.Operations?.Count is not > 0)
-        {
-            source.Operations = additional.Operations;
-            return;
-        }
-
-        foreach (var operation in additional.Operations)
-        {
-            _ = source.Operations.TryAdd(operation.Key, operation.Value);
+            _ = document.Tags.Add(tag);
         }
     }
 
-    private static void InsertComponents(this OpenApiDocument document, List<OpenApiComponents> components)
+    private static void AddPaths(this OpenApiDocument document, OpenApiPaths? paths)
     {
-        if (components.Count is 0)
+        if (paths?.Count is not > 0)
         {
             return;
         }
 
-        var result = new OpenApiComponents();
-        var allComponents = document.Components is null ? components : components.Concat([document.Components]);
-
-        foreach (var component in allComponents)
+        if (document.Paths?.Count is not > 0)
         {
-            result.Schemas.AddValues(component.Schemas);
-            result.Responses.AddValues(component.Responses);
-            result.Parameters.AddValues(component.Parameters);
-            result.Examples.AddValues(component.Examples);
-            result.RequestBodies.AddValues(component.RequestBodies);
-            result.Headers.AddValues(component.Headers);
-            result.Links.AddValues(component.Links);
-            result.Callbacks.AddValues(component.Callbacks);
-            result.Extensions.AddValues(component.Extensions);
+            document.Paths = paths;
+            return;
         }
 
-        document.Components = result;
+        foreach (var path in paths)
+        {
+            document.AddPath(path.Key, path.Value);
+        }
+    }
+
+    private static void AddComponents(this OpenApiDocument document, OpenApiComponents? components)
+    {
+        if (components is null)
+        {
+            return;
+        }
+
+        document.Components ??= new();
+
+        document.Components.Schemas = Concat(document.Components.Schemas, components.Schemas);
+        document.Components.SecuritySchemes = Concat(document.Components.SecuritySchemes, components.SecuritySchemes);
+        document.Components.Responses = Concat(document.Components.Responses, components.Responses);
+        document.Components.Parameters = Concat(document.Components.Parameters, components.Parameters);
+        document.Components.Examples = Concat(document.Components.Examples, components.Examples);
+        document.Components.RequestBodies = Concat(document.Components.RequestBodies, components.RequestBodies);
+        document.Components.Headers = Concat(document.Components.Headers, components.Headers);
+        document.Components.Links = Concat(document.Components.Links, components.Links);
+        document.Components.Callbacks = Concat(document.Components.Callbacks, components.Callbacks);
+        document.Components.Extensions = Concat(document.Components.Extensions, components.Extensions);
     }
 }

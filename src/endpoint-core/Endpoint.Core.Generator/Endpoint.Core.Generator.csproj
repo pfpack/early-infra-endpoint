@@ -20,7 +20,7 @@
     <Description>EarlyFuncPack Infra.Endpoint is an infrastructure engine for .NET for building lightweight applications and services.</Description>
     <RootNamespace>PrimeFuncPack</RootNamespace>
     <AssemblyName>EarlyFuncPack.Infra.Endpoint.Core.Generator</AssemblyName>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,7 +41,7 @@
   <ItemGroup>
     <PackageReference Include="EarlyFuncPack.CodeAnalysis.Extensions" Version="0.0.1" />
     <PackageReference Include="EarlyFuncPack.CodeAnalysis.SourceBuilder" Version="0.0.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
