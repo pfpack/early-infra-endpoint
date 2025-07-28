@@ -199,15 +199,15 @@ partial class EndpointSwaggerConfigurator
 
         document.Components ??= new();
 
-        document.Components.Schemas = Combine(document.Components.Schemas, components.Schemas);
-        document.Components.SecuritySchemes = Combine(document.Components.SecuritySchemes, components.SecuritySchemes);
-        document.Components.Responses = Combine(document.Components.Responses, components.Responses);
-        document.Components.Parameters = Combine(document.Components.Parameters, components.Parameters);
-        document.Components.Examples = Combine(document.Components.Examples, components.Examples);
-        document.Components.RequestBodies = Combine(document.Components.RequestBodies, components.RequestBodies);
-        document.Components.Headers = Combine(document.Components.Headers, components.Headers);
-        document.Components.Links = Combine(document.Components.Links, components.Links);
-        document.Components.Callbacks = Combine(document.Components.Callbacks, components.Callbacks);
-        document.Components.Extensions = Combine(document.Components.Extensions, components.Extensions);
+        document.Components.Schemas = Concat(document.Components.Schemas, components.Schemas);
+        document.Components.SecuritySchemes = Concat(document.Components.SecuritySchemes, components.SecuritySchemes);
+        document.Components.Responses = Concat(document.Components.Responses, components.Responses);
+        document.Components.Parameters = Concat(document.Components.Parameters, components.Parameters);
+        document.Components.Examples = Concat(document.Components.Examples, components.Examples);
+        document.Components.RequestBodies = Concat(document.Components.RequestBodies, components.RequestBodies);
+        document.Components.Headers = Concat(document.Components.Headers, components.Headers);
+        document.Components.Links = Concat(document.Components.Links, components.Links);
+        document.Components.Callbacks = Concat(document.Components.Callbacks, components.Callbacks);
+        document.Components.Extensions = Concat(document.Components.Extensions, components.Extensions);
     }
 }

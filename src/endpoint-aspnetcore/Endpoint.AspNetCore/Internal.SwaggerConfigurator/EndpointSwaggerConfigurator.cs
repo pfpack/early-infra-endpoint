@@ -5,7 +5,7 @@ namespace PrimeFuncPack;
 
 internal static partial class EndpointSwaggerConfigurator
 {
-    private static IDictionary<string, TValue> Combine<TValue>(
+    private static IDictionary<string, TValue> Concat<TValue>(
         [AllowNull] IDictionary<string, TValue> source,
         [AllowNull] IDictionary<string, TValue> values)
     {
