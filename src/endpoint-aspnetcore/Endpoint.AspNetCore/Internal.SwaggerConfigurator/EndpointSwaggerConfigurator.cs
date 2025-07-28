@@ -5,25 +5,25 @@ namespace PrimeFuncPack;
 
 internal static partial class EndpointSwaggerConfigurator
 {
-    private static IDictionary<string, TValue> Concat<TValue>(
-        [AllowNull] IDictionary<string, TValue> source,
-        [AllowNull] IDictionary<string, TValue> values)
+    private static IDictionary<string, TValue> MergeWith<TValue>(
+        [AllowNull] IDictionary<string, TValue> accumulate,
+        [AllowNull] IDictionary<string, TValue> other)
     {
-        if (values?.Count is not > 0)
+        if (other?.Count is not > 0)
         {
-            return source ?? new Dictionary<string, TValue>(capacity: 0);
+            return accumulate ?? new Dictionary<string, TValue>(capacity: 0);
         }
 
-        if (source?.Count is not > 0)
+        if (accumulate?.Count is not > 0)
         {
-            return new Dictionary<string, TValue>(values);
+            return new Dictionary<string, TValue>(other);
         }
 
-        foreach (var value in values)
+        foreach (var pair in other)
         {
-            _ = source.TryAdd(value.Key, value.Value);
+            _ = accumulate.TryAdd(pair.Key, pair.Value);
         }
 
-        return source;
+        return accumulate;
     }
 }
