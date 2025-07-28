@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.OpenApi;
 
 namespace PrimeFuncPack;
 
 public sealed class EndpointOperation
 {
-    public EndpointOperation(string id, EndpointVerb verb, string route)
+    public EndpointOperation([AllowNull] string id, EndpointVerb verb, [AllowNull] string route)
     {
         Id = id ?? string.Empty;
         Verb = verb;
