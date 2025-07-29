@@ -199,15 +199,15 @@ partial class EndpointSwaggerConfigurator
 
         document.Components ??= new();
 
-        document.Components.Schemas = Concat(document.Components.Schemas, components.Schemas);
-        document.Components.SecuritySchemes = Concat(document.Components.SecuritySchemes, components.SecuritySchemes);
-        document.Components.Responses = Concat(document.Components.Responses, components.Responses);
-        document.Components.Parameters = Concat(document.Components.Parameters, components.Parameters);
-        document.Components.Examples = Concat(document.Components.Examples, components.Examples);
-        document.Components.RequestBodies = Concat(document.Components.RequestBodies, components.RequestBodies);
-        document.Components.Headers = Concat(document.Components.Headers, components.Headers);
-        document.Components.Links = Concat(document.Components.Links, components.Links);
-        document.Components.Callbacks = Concat(document.Components.Callbacks, components.Callbacks);
-        document.Components.Extensions = Concat(document.Components.Extensions, components.Extensions);
+        document.Components.Schemas = MergeWith(document.Components.Schemas, components.Schemas);
+        document.Components.SecuritySchemes = MergeWith(document.Components.SecuritySchemes, components.SecuritySchemes);
+        document.Components.Responses = MergeWith(document.Components.Responses, components.Responses);
+        document.Components.Parameters = MergeWith(document.Components.Parameters, components.Parameters);
+        document.Components.Examples = MergeWith(document.Components.Examples, components.Examples);
+        document.Components.RequestBodies = MergeWith(document.Components.RequestBodies, components.RequestBodies);
+        document.Components.Headers = MergeWith(document.Components.Headers, components.Headers);
+        document.Components.Links = MergeWith(document.Components.Links, components.Links);
+        document.Components.Callbacks = MergeWith(document.Components.Callbacks, components.Callbacks);
+        document.Components.Extensions = MergeWith(document.Components.Extensions, components.Extensions);
     }
 }
